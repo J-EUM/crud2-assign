@@ -11,11 +11,21 @@ class ActorsView(View):
         results = []
 
         for actor in actors:
+            movies_list = []
+            movies = Movie.objects.filter(actor__id=actor.id)
+            for movie in movies:
+                movies_list.append(
+                    {
+                        'movie_title': movie.title
+                    }
+                )
             results.append(
                 {
                     'first_name' : actor.first_name,
                     'last_name' : actor.last_name,
+                    'movies_list' : movies_list
                 }
+                
             )
 
         return JsonResponse({'results': results}, status=200)
