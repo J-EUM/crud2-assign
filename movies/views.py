@@ -5,6 +5,32 @@ from django.views import View
 
 from movies.models import *
 # Create your views here.
+class MoviesView(View):
+    def get(self, request):
+        movies = Movie.objects.all()
+        results = []
+        for movie in movies:
+            actors_list = []
+            actors = Actor.objects.filter(movies__id = movie.id)
+            for actor in actors:
+                actors_list.append(
+                    {
+                        'first_name': actor.first_name,
+                        'last_name': actor.last_name
+                    }
+                )
+            results.append(
+                {
+                    'title': movie.title,
+                    'running_time': movie.running_time,
+                    'actors_list': actors_list
+
+                }
+            )
+        return JsonResponse({'results': results}, status=200)
+
+    
+
 class ActorsView(View):
     def get(self, request):
         actors = Actor.objects.all()
@@ -29,4 +55,3 @@ class ActorsView(View):
             )
 
         return JsonResponse({'results': results}, status=200)
-
