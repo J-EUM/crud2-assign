@@ -5,8 +5,18 @@ from django.views import View
 
 from movies.models import *
 # Create your views here.
+class ActorsView(View):
+    def get(self, request):
+        actors = Actor.objects.all()
+        results = []
 
-class MoviesView(View):
-    def post(self, request):
-        data = json.loads(request.body)
-        
+        for actor in actors:
+            results.append(
+                {
+                    'first_name' : actor.first_name,
+                    'last_name' : actor.last_name,
+                }
+            )
+
+        return JsonResponse({'results': results}, status=200)
+
