@@ -37,19 +37,11 @@ class ActorsView(View):
         results = []
 
         for actor in actors:
-            movies_list = []
-            movies = actor.movies.all()
-            for movie in movies:
-                movies_list.append(
-                    {
-                        'movie_title': movie.title
-                    }
-                )
             results.append(
                 {
                     'first_name' : actor.first_name,
                     'last_name' : actor.last_name,
-                    'movies_list' : movies_list
+                    'movies_list' : [movie.title for movie in actor.movies.all()]
                 }
                 
             )
