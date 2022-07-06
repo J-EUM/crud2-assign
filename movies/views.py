@@ -11,7 +11,7 @@ class MoviesView(View):
         results = []
         for movie in movies:
             actors_list = []
-            actors = Actor.objects.filter(movies__id = movie.id)
+            actors = movie.actor_set.all()
             for actor in actors:
                 actors_list.append(
                     {
@@ -27,7 +27,7 @@ class MoviesView(View):
 
                 }
             )
-        return JsonResponse({'results': results}, status=200)
+        return JsonResponse({'results': results},)
 
     
 
@@ -38,7 +38,7 @@ class ActorsView(View):
 
         for actor in actors:
             movies_list = []
-            movies = Movie.objects.filter(actor__id=actor.id)
+            movies = actor.movies.all()
             for movie in movies:
                 movies_list.append(
                     {
